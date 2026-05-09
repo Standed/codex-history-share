@@ -6,6 +6,15 @@
   "bin": {
     "codex-history": "./src/cli.js"
   },
+  "files": [
+    "README.md",
+    "README_ZH.md",
+    "LICENSE",
+    "RELEASE.md",
+    "src",
+    "scripts",
+    "skills"
+  ],
   "scripts": {
     "test": "node --test",
     "start": "node ./src/cli.js",
