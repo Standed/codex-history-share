@@ -1,0 +1,3 @@
+display_name: Codex History Share
+short_description: Keep Codex sidebar history visible across provider switches.
+default_prompt: Diagnose my Codex history visibility and sync local sessions to the current provider.

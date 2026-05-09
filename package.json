@@ -1,0 +1,36 @@
+{
+  "name": "codex-history-share",
+  "version": "0.1.0",
+  "description": "Keep Codex local sidebar history visible across API providers and ChatGPT login modes.",
+  "type": "module",
+  "bin": {
+    "codex-history": "./src/cli.js"
+  },
+  "scripts": {
+    "test": "node --test",
+    "start": "node ./src/cli.js",
+    "status": "node ./src/cli.js status"
+  },
+  "keywords": [
+    "codex",
+    "history",
+    "provider",
+    "sidebar",
+    "sync"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Standed/codex-history-share.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Standed/codex-history-share/issues"
+  },
+  "homepage": "https://github.com/Standed/codex-history-share#readme",
+  "dependencies": {
+    "codex-provider-sync": "git+https://github.com/Dailin521/codex-provider-sync.git"
+  }
+}
