@@ -19,7 +19,7 @@
 从 GitHub Releases 下载发布包：
 
 ```text
-Codex历史修复-mac.zip
+codex-history-repair-mac.zip
 ```
 
 发布页：

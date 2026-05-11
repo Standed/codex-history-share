@@ -1,6 +1,6 @@
 {
   "name": "codex-history-share",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Keep Codex local sidebar history visible across API providers and ChatGPT login modes.",
   "type": "module",
   "bin": {

@@ -1,5 +1,13 @@
 # Release Notes
 
+## v0.1.3
+
+This release uses an ASCII release asset filename so GitHub does not mangle the downloadable zip name.
+
+- Rename the macOS release asset to `codex-history-repair-mac.zip`.
+- Keep the extracted folder and double-click helper in Chinese for student readability.
+- Update README and student instructions with the stable asset name.
+
 ## v0.1.2
 
 This release adds a beginner-friendly macOS double-click flow.

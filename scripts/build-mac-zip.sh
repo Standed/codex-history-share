@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD_DIR="$ROOT_DIR/dist/Codex历史修复-mac"
-ZIP_PATH="$ROOT_DIR/dist/Codex历史修复-mac.zip"
+ZIP_PATH="$ROOT_DIR/dist/codex-history-repair-mac.zip"
 
 rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR"

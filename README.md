@@ -18,7 +18,7 @@ This project wraps the proven low-level repair logic from [`codex-provider-sync`
 For users who do not know how to open Terminal, use the macOS double-click package from the GitHub release assets:
 
 ```text
-Codex历史修复-mac.zip
+codex-history-repair-mac.zip
 ```
 
 Release page:
