@@ -39,7 +39,11 @@ export function run(command, args = [], options = {}) {
 
 export async function commandExists(command) {
   try {
-    await run("which", [command]);
+    if (process.platform === "win32") {
+      await run("where", [command]);
+    } else {
+      await run("command", ["-v", command], { shell: true });
+    }
     return true;
   } catch {
     return false;

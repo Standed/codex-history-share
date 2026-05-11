@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+PACKAGE_URL="https://github.com/Standed/codex-history-share/releases/latest/download/codex-history-share.tgz"
+TMP_PACKAGE="${TMPDIR:-/tmp}/codex-history-share.tgz"
+
 if ! command -v npm >/dev/null 2>&1; then
   echo "npm is required. Install Node.js first: https://nodejs.org/" >&2
   exit 1
@@ -13,16 +16,18 @@ if [ "$node_major" -lt 24 ]; then
   exit 1
 fi
 
-npm install -g git+https://github.com/Standed/codex-history-share.git
+curl -fsSL "$PACKAGE_URL" -o "$TMP_PACKAGE"
+npm install -g "$TMP_PACKAGE"
 codex-history setup
 
-cat <<'EOF'
+cat <<'DONE'
 
 codex-history-share installed.
 
 Common commands:
   codex-history setup
+  codex-history doctor
   codex-history status
   codex-history sync
   codex-history export
-EOF
+DONE

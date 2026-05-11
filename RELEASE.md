@@ -1,5 +1,16 @@
 # Release Notes
 
+## v0.2.0
+
+This release hardens the project for real student environments across macOS and Windows.
+
+- Add `codex-history doctor` for one-command diagnostics and log hints.
+- Make `setup`, `install-agent`, and `uninstall-agent` cross-platform.
+- Add Windows Scheduled Task support for background watching.
+- Add Windows double-click helper zip.
+- Add release asset builder that publishes an installable `codex-history-share.tgz`, avoiding a Git dependency on student machines.
+- Keep macOS pkg and zip assets, with docs explaining signing/notarization requirements.
+
 ## v0.1.4
 
 This release adds a macOS `.pkg` installer flow, which is the preferred path for non-technical students.

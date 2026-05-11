@@ -3,7 +3,7 @@ set -u
 
 export PATH="/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 
-REPO="Standed/codex-history-share"
+PACKAGE_URL="https://github.com/Standed/codex-history-share/releases/latest/download/codex-history-share.tgz"
 NODE_URL="https://nodejs.org/"
 LOG_DIR="/Users/Shared/codex-history-share"
 LOG_FILE="$LOG_DIR/pkg-install.log"
@@ -55,7 +55,9 @@ fi
 echo "Node.js: $(node -v)"
 echo "npm: $(npm -v)"
 
-npm install -g "git+https://github.com/${REPO}.git"
+tmp_package="/tmp/codex-history-share.tgz"
+/usr/bin/curl -fsSL "$PACKAGE_URL" -o "$tmp_package"
+npm install -g "$tmp_package"
 
 npm_prefix="$(npm prefix -g)"
 codex_history_bin="$npm_prefix/bin/codex-history"

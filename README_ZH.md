@@ -49,6 +49,27 @@ docs/小白学员安装说明.md
 ```
 
 
+## Windows 小白学员怎么用
+
+从 GitHub Releases 下载：
+
+```text
+codex-history-repair-windows.zip
+```
+
+解压后双击：
+
+```text
+CodexHistoryRepair-Windows.cmd
+```
+
+如果 Windows SmartScreen 提示风险，点击“更多信息”，再点“仍要运行”。
+
+如果提示需要安装 Node.js，工具会自动打开 Node.js 官网。安装 Node.js 24 LTS 后，再双击一次修复工具。
+
+完成后，完全退出 Codex Desktop，再重新打开 Codex。
+
+
 ## 最推荐的用法
 
 如果你只想解决“切换 API 或账号后，Codex 左侧历史不见了”，直接运行：
@@ -60,7 +81,7 @@ curl -fsSL https://raw.githubusercontent.com/Standed/codex-history-share/main/sc
 或者手动安装：
 
 ```bash
-npm install -g git+https://github.com/Standed/codex-history-share.git
+npm install -g https://github.com/Standed/codex-history-share/releases/latest/download/codex-history-share.tgz
 codex-history setup
 ```
 

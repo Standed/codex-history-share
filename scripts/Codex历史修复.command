@@ -3,8 +3,7 @@ set -u
 
 export PATH="/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 
-REPO="Standed/codex-history-share"
-INSTALL_URL="https://raw.githubusercontent.com/${REPO}/main/scripts/install.sh"
+INSTALL_URL="https://raw.githubusercontent.com/Standed/codex-history-share/main/scripts/install.sh"
 NODE_URL="https://nodejs.org/"
 LOG_DIR="$HOME/.codex-history-share"
 LOG_FILE="$LOG_DIR/double-click-install.log"

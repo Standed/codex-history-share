@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
+import { installBackgroundAgent, uninstallBackgroundAgent } from "./agent.js";
+import { runDoctor } from "./doctor.js";
 import { exportHistory } from "./export.js";
-import { installLaunchAgent, uninstallLaunchAgent } from "./launch-agent.js";
 import { resolveCodexHome } from "./paths.js";
 import { providerRestore, providerStatus, providerSync } from "./provider-sync.js";
 import { watchHistory } from "./watch.js";
@@ -44,6 +44,7 @@ Keep Codex local sidebar history visible across API providers and ChatGPT login 
 
 Usage:
   codex-history setup [--provider ID] [--keep N] [--codex-home PATH]
+  codex-history doctor [--json] [--codex-home PATH]
   codex-history status [--codex-home PATH]
   codex-history sync [--provider ID] [--keep N] [--codex-home PATH]
   codex-history watch [--keep N] [--codex-home PATH]
@@ -78,6 +79,14 @@ async function main() {
     return;
   }
 
+  if (command === "doctor") {
+    console.log(await runDoctor({
+      codexHome,
+      json: Boolean(flags.json)
+    }));
+    return;
+  }
+
   if (command === "setup") {
     const keep = parseKeep(flags.keep);
     console.log("Step 1/2: syncing history to the current provider...");
@@ -88,18 +97,15 @@ async function main() {
     }));
 
     console.log("\nStep 2/2: installing the background watcher...");
-    if (process.platform === "darwin") {
-      const cliPath = fileURLToPath(import.meta.url);
-      const target = await installLaunchAgent({
-        codexHome,
-        keep,
-        nodePath: process.execPath,
-        cliPath
-      });
-      console.log(`Installed and started LaunchAgent: ${target}`);
+    const agent = await installBackgroundAgent({
+      codexHome,
+      keep
+    });
+    if (agent.type === "manual-watch") {
+      console.log("Automatic background install is not available on this platform yet.");
+      console.log(`Keep this running in a terminal instead: ${agent.target}`);
     } else {
-      console.log("Automatic background install is only available on macOS for now.");
-      console.log("Keep this running in a terminal instead: codex-history watch");
+      console.log(`Installed and started ${agent.type}: ${agent.target}`);
     }
 
     console.log("\nNext: quit and reopen Codex Desktop so the sidebar reloads the repaired local index.");
@@ -149,20 +155,17 @@ async function main() {
   }
 
   if (command === "install-agent") {
-    const cliPath = fileURLToPath(import.meta.url);
-    const target = await installLaunchAgent({
+    const agent = await installBackgroundAgent({
       codexHome,
-      keep: parseKeep(flags.keep),
-      nodePath: process.execPath,
-      cliPath
+      keep: parseKeep(flags.keep)
     });
-    console.log(`Installed and loaded LaunchAgent: ${target}`);
+    console.log(`Installed and started ${agent.type}: ${agent.target}`);
     return;
   }
 
   if (command === "uninstall-agent") {
-    const target = await uninstallLaunchAgent();
-    console.log(`Uninstalled LaunchAgent: ${target}`);
+    const agent = await uninstallBackgroundAgent();
+    console.log(`Uninstalled ${agent.type}: ${agent.target}`);
     return;
   }
 
