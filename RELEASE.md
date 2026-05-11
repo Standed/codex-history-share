@@ -1,5 +1,17 @@
 # Release Notes
 
+## v0.1.1
+
+This release focuses on first-run reliability for non-technical users.
+
+- Add `codex-history setup` as the recommended one-command flow.
+- Run an immediate provider sync before installing the background watcher.
+- Start the macOS LaunchAgent with `bootstrap` and `kickstart`, with legacy `load` fallback.
+- Make `watch` sync once on startup, then monitor file changes.
+- Add a 5-minute fallback change check so missed file events still get repaired.
+- Update the installer script to run `setup` automatically and give a clear Node.js 24+ error.
+- Update README guidance to tell users to quit and reopen Codex Desktop after setup.
+
 ## v0.1.0
 
 Initial public release.

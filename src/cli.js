@@ -43,6 +43,7 @@ function printHelp() {
 Keep Codex local sidebar history visible across API providers and ChatGPT login modes.
 
 Usage:
+  codex-history setup [--provider ID] [--keep N] [--codex-home PATH]
   codex-history status [--codex-home PATH]
   codex-history sync [--provider ID] [--keep N] [--codex-home PATH]
   codex-history watch [--keep N] [--codex-home PATH]
@@ -74,6 +75,34 @@ async function main() {
 
   if (command === "status") {
     console.log(await providerStatus({ codexHome }));
+    return;
+  }
+
+  if (command === "setup") {
+    const keep = parseKeep(flags.keep);
+    console.log("Step 1/2: syncing history to the current provider...");
+    console.log(await providerSync({
+      codexHome,
+      provider: flags.provider,
+      keep
+    }));
+
+    console.log("\nStep 2/2: installing the background watcher...");
+    if (process.platform === "darwin") {
+      const cliPath = fileURLToPath(import.meta.url);
+      const target = await installLaunchAgent({
+        codexHome,
+        keep,
+        nodePath: process.execPath,
+        cliPath
+      });
+      console.log(`Installed and started LaunchAgent: ${target}`);
+    } else {
+      console.log("Automatic background install is only available on macOS for now.");
+      console.log("Keep this running in a terminal instead: codex-history watch");
+    }
+
+    console.log("\nNext: quit and reopen Codex Desktop so the sidebar reloads the repaired local index.");
     return;
   }
 

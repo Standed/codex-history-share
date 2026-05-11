@@ -10,6 +10,7 @@ test("help renders core commands", async () => {
     cwd: new URL("..", import.meta.url)
   });
 
+  assert.match(stdout, /codex-history setup/);
   assert.match(stdout, /codex-history status/);
   assert.match(stdout, /codex-history watch/);
   assert.match(stdout, /codex-history export/);

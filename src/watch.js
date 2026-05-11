@@ -13,6 +13,8 @@ const WATCH_FILES = [
   "session_index.jsonl"
 ];
 
+const DEFAULT_INTERVAL_MS = 5 * 60 * 1000;
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -25,7 +27,28 @@ async function appendLog(message) {
   );
 }
 
-export async function watchHistory({ codexHome, keep = 5, debounceMs = 1500, once = false } = {}) {
+async function readWatchFingerprint(codexHome) {
+  const parts = [];
+  for (const file of WATCH_FILES) {
+    const filePath = path.join(codexHome, file);
+    try {
+      const stat = await fsp.stat(filePath);
+      parts.push(`${file}:${stat.size}:${Math.trunc(stat.mtimeMs)}`);
+    } catch {
+      parts.push(`${file}:missing`);
+    }
+  }
+  return parts.join("|");
+}
+
+export async function watchHistory({
+  codexHome,
+  keep = 5,
+  debounceMs = 1500,
+  intervalMs = DEFAULT_INTERVAL_MS,
+  initialSync = true,
+  once = false
+} = {}) {
   let currentProvider = await readCurrentProvider(codexHome);
   await appendLog(`watch started for ${codexHome}; provider=${currentProvider}`);
   console.log(`Watching ${codexHome}`);
@@ -34,8 +57,9 @@ export async function watchHistory({ codexHome, keep = 5, debounceMs = 1500, onc
   let timer = null;
   let syncing = false;
   let pending = false;
+  let fingerprint = await readWatchFingerprint(codexHome);
 
-  async function runSync(reason) {
+  async function runSync(reason, { force = false } = {}) {
     if (syncing) {
       pending = true;
       return;
@@ -45,12 +69,13 @@ export async function watchHistory({ codexHome, keep = 5, debounceMs = 1500, onc
     try {
       await sleep(250);
       const nextProvider = await readCurrentProvider(codexHome);
-      if (nextProvider !== currentProvider || reason === "manual" || reason === "sqlite") {
+      if (force || nextProvider !== currentProvider || reason === "manual" || reason === "sqlite") {
         console.log(`[${new Date().toLocaleTimeString()}] Syncing history to provider ${nextProvider} (${reason})`);
         await appendLog(`sync start provider=${nextProvider} reason=${reason}`);
         const output = await providerSync({ codexHome, provider: nextProvider, keep });
         await appendLog(`sync complete\n${output}`);
         currentProvider = nextProvider;
+        fingerprint = await readWatchFingerprint(codexHome);
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
@@ -60,7 +85,7 @@ export async function watchHistory({ codexHome, keep = 5, debounceMs = 1500, onc
       syncing = false;
       if (pending) {
         pending = false;
-        runSync("pending");
+        runSync("pending", { force: true });
       }
     }
   }
@@ -84,12 +109,31 @@ export async function watchHistory({ codexHome, keep = 5, debounceMs = 1500, onc
   }
 
   if (once) {
-    await runSync("manual");
+    await runSync("manual", { force: true });
     for (const watcher of watchers) watcher.close();
     return;
   }
 
+  if (initialSync) {
+    await runSync("startup", { force: true });
+  }
+
+  const interval = setInterval(() => {
+    readWatchFingerprint(codexHome)
+      .then((nextFingerprint) => {
+        if (nextFingerprint !== fingerprint) {
+          fingerprint = nextFingerprint;
+          runSync("interval-change", { force: true });
+        }
+      })
+      .catch((error) => {
+        const message = error instanceof Error ? error.message : String(error);
+        appendLog(`interval check failed: ${message}`);
+      });
+  }, intervalMs);
+
   process.on("SIGINT", async () => {
+    clearInterval(interval);
     for (const watcher of watchers) watcher.close();
     await appendLog("watch stopped");
     process.exit(0);
