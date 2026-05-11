@@ -13,6 +13,33 @@ This project wraps the proven low-level repair logic from [`codex-provider-sync`
 - `install-agent`: install a macOS LaunchAgent so syncing keeps running in the background.
 - `restore`: restore from the backups created by the underlying sync tool.
 
+## For Non-Technical Users
+
+For users who do not know how to open Terminal, use the macOS double-click package from the GitHub release assets:
+
+```text
+Codex历史修复-mac.zip
+```
+
+Release page:
+
+```text
+https://github.com/Standed/codex-history-share/releases/latest
+```
+
+Unzip it, then double-click:
+
+```text
+Codex历史修复.command
+```
+
+If macOS blocks it, right-click the file and choose Open.
+
+If Node.js is missing, the helper opens the Node.js website automatically. Install Node.js 24 LTS, then double-click the helper again.
+
+After it finishes, quit and reopen Codex Desktop.
+
+
 ## Quick Start
 
 Requires Node.js 24+.

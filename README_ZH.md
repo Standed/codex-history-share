@@ -12,6 +12,41 @@
 - `export`：导出 Markdown/JSON 索引，至少保证历史标题、项目、首条用户消息可检索。
 - `restore`：从底层工具创建的备份中恢复。
 
+## 小白学员怎么用
+
+如果学员不会打开 Terminal，推荐使用双击版。
+
+从 GitHub Releases 下载发布包：
+
+```text
+Codex历史修复-mac.zip
+```
+
+发布页：
+
+```text
+https://github.com/Standed/codex-history-share/releases/latest
+```
+
+解压后双击：
+
+```text
+Codex历史修复.command
+```
+
+如果 Mac 提示无法打开，就右键这个文件，选择打开。
+
+如果工具提示需要安装 Node.js，它会自动打开 Node.js 官网。安装 Node.js 24 LTS 后，再双击一次这个文件。
+
+跑完后，让学员完全退出 Codex Desktop，再重新打开 Codex。
+
+更详细的学员说明见：
+
+```text
+docs/小白学员安装说明.md
+```
+
+
 ## 最推荐的用法
 
 如果你只想解决“切换 API 或账号后，Codex 左侧历史不见了”，直接运行：
