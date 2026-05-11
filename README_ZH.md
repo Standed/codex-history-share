@@ -14,12 +14,12 @@
 
 ## 小白学员怎么用
 
-如果学员不会打开 Terminal，推荐使用双击版。
+最推荐给普通学员的是 macOS 安装包，而不是 Terminal 命令。
 
-从 GitHub Releases 下载发布包：
+从 GitHub Releases 下载：
 
 ```text
-codex-history-repair-mac.zip
+codex-history-repair-mac.pkg
 ```
 
 发布页：
@@ -28,17 +28,19 @@ codex-history-repair-mac.zip
 https://github.com/Standed/codex-history-share/releases/latest
 ```
 
-解压后双击：
+学员只需要双击安装包，一路继续。安装器会自动执行修复。
+
+如果提示需要安装 Node.js，安装器会自动打开 Node.js 官网。让学员安装 Node.js 24 LTS，装完后再双击一次安装包。
+
+完成后，让学员按 Command + Q 完全退出 Codex Desktop，再重新打开 Codex。
+
+备用方案才是下载：
 
 ```text
-Codex历史修复.command
+codex-history-repair-mac.zip
 ```
 
-如果 Mac 提示无法打开，就右键这个文件，选择打开。
-
-如果工具提示需要安装 Node.js，它会自动打开 Node.js 官网。安装 Node.js 24 LTS 后，再双击一次这个文件。
-
-跑完后，让学员完全退出 Codex Desktop，再重新打开 Codex。
+这个 zip 里是 `.command` 脚本，可能会被 macOS 安全提示拦住，不建议作为第一选择。
 
 更详细的学员说明见：
 

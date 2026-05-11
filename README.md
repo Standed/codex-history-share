@@ -15,10 +15,10 @@ This project wraps the proven low-level repair logic from [`codex-provider-sync`
 
 ## For Non-Technical Users
 
-For users who do not know how to open Terminal, use the macOS double-click package from the GitHub release assets:
+For users who do not know how to open Terminal, use the macOS installer package from the GitHub release assets:
 
 ```text
-codex-history-repair-mac.zip
+codex-history-repair-mac.pkg
 ```
 
 Release page:
@@ -27,17 +27,13 @@ Release page:
 https://github.com/Standed/codex-history-share/releases/latest
 ```
 
-Unzip it, then double-click:
+Double-click the package and follow the installer. It runs the repair automatically.
 
-```text
-Codex历史修复.command
-```
-
-If macOS blocks it, right-click the file and choose Open.
-
-If Node.js is missing, the helper opens the Node.js website automatically. Install Node.js 24 LTS, then double-click the helper again.
+If Node.js is missing, the installer opens the Node.js website automatically. Install Node.js 24 LTS, then run the package again.
 
 After it finishes, quit and reopen Codex Desktop.
+
+The zip helper is still provided as a fallback, but macOS may block unsigned `.command` files, so the package is the preferred beginner path.
 
 
 ## Quick Start

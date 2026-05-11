@@ -1,0 +1,77 @@
+#!/bin/bash
+set -u
+
+export PATH="/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+REPO="Standed/codex-history-share"
+NODE_URL="https://nodejs.org/"
+LOG_DIR="/Users/Shared/codex-history-share"
+LOG_FILE="$LOG_DIR/pkg-install.log"
+
+mkdir -p "$LOG_DIR"
+exec >> "$LOG_FILE" 2>&1
+
+echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] postinstall started"
+
+console_user="$(/usr/bin/stat -f '%Su' /dev/console 2>/dev/null || true)"
+if [ -z "$console_user" ] || [ "$console_user" = "root" ] || [ "$console_user" = "loginwindow" ]; then
+  echo "No active console user found"
+  exit 0
+fi
+
+user_home="$(/usr/bin/dscl . -read "/Users/$console_user" NFSHomeDirectory 2>/dev/null | /usr/bin/awk '{print $2}')"
+if [ -z "$user_home" ] || [ ! -d "$user_home" ]; then
+  user_home="/Users/$console_user"
+fi
+
+run_as_user() {
+  /usr/bin/sudo -H -u "$console_user" env HOME="$user_home" PATH="$PATH" "$@"
+}
+
+notify_user() {
+  local message="$1"
+  run_as_user /usr/bin/osascript -e "display dialog \"$message\" buttons {\"好的\"} default button \"好的\" with title \"Codex 历史修复\"" >/dev/null 2>&1 || true
+}
+
+open_for_user() {
+  run_as_user /usr/bin/open "$1" >/dev/null 2>&1 || true
+}
+
+if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
+  echo "Node.js or npm missing"
+  open_for_user "$NODE_URL"
+  notify_user "这台电脑还没有安装 Node.js。请安装 Node.js 24 LTS，安装完成后再运行一次 Codex 历史修复安装包。"
+  exit 0
+fi
+
+node_major="$(node -p "Number(process.versions.node.split('.')[0])" 2>/dev/null || echo 0)"
+if [ "$node_major" -lt 24 ]; then
+  echo "Node.js too old: $(node -v 2>/dev/null || echo unknown)"
+  open_for_user "$NODE_URL"
+  notify_user "当前 Node.js 版本太低。请安装 Node.js 24 LTS，安装完成后再运行一次 Codex 历史修复安装包。"
+  exit 0
+fi
+
+echo "Node.js: $(node -v)"
+echo "npm: $(npm -v)"
+
+npm install -g "git+https://github.com/${REPO}.git"
+
+npm_prefix="$(npm prefix -g)"
+codex_history_bin="$npm_prefix/bin/codex-history"
+if [ ! -x "$codex_history_bin" ]; then
+  codex_history_bin="$(command -v codex-history || true)"
+fi
+
+if [ -z "$codex_history_bin" ] || [ ! -x "$codex_history_bin" ]; then
+  echo "codex-history binary not found after npm install"
+  notify_user "安装没有完成：找不到 codex-history 命令。请把日志发给老师或助教：$LOG_FILE"
+  exit 0
+fi
+
+run_as_user "$codex_history_bin" setup --codex-home "$user_home/.codex"
+
+notify_user "Codex 历史修复已完成。请按 Command + Q 完全退出 Codex Desktop，然后重新打开 Codex。"
+
+echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] postinstall finished"
+exit 0

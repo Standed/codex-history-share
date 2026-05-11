@@ -1,5 +1,15 @@
 # Release Notes
 
+## v0.1.4
+
+This release adds a macOS `.pkg` installer flow, which is the preferred path for non-technical students.
+
+- Add `scripts/build-mac-pkg.sh` to build `codex-history-repair-mac.pkg`.
+- Add a package `postinstall` script that runs the repair for the active macOS user.
+- Support optional Developer ID Installer signing via `DEVELOPER_ID_INSTALLER`.
+- Support optional notarization via `NOTARY_PROFILE`.
+- Update beginner docs to recommend the `.pkg` installer over the `.command` zip fallback.
+
 ## v0.1.3
 
 This release uses an ASCII release asset filename so GitHub does not mangle the downloadable zip name.
