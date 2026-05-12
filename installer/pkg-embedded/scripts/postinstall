@@ -1,0 +1,60 @@
+#!/bin/bash
+set -u
+
+INSTALL_ROOT="/usr/local/share/codex-history-share"
+LOG_DIR="/Users/Shared/codex-history-share"
+LOG_FILE="$LOG_DIR/embedded-pkg-install.log"
+
+mkdir -p "$LOG_DIR"
+exec >> "$LOG_FILE" 2>&1
+
+echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] embedded postinstall started"
+
+console_user="$(/usr/bin/stat -f '%Su' /dev/console 2>/dev/null || true)"
+if [ -z "$console_user" ] || [ "$console_user" = "root" ] || [ "$console_user" = "loginwindow" ]; then
+  echo "No active console user found"
+  exit 0
+fi
+
+user_home="$(/usr/bin/dscl . -read "/Users/$console_user" NFSHomeDirectory 2>/dev/null | /usr/bin/awk '{print $2}')"
+if [ -z "$user_home" ] || [ ! -d "$user_home" ]; then
+  user_home="/Users/$console_user"
+fi
+
+machine_arch="$(/usr/bin/uname -m)"
+if [ "$machine_arch" = "arm64" ]; then
+  node_bin="$INSTALL_ROOT/runtime/node-darwin-arm64/bin/node"
+else
+  node_bin="$INSTALL_ROOT/runtime/node-darwin-x64/bin/node"
+fi
+
+cli_path="$INSTALL_ROOT/app/src/cli.js"
+
+run_as_user() {
+  /usr/bin/sudo -H -u "$console_user" env HOME="$user_home" PATH="/usr/bin:/bin:/usr/sbin:/sbin" "$@"
+}
+
+notify_user() {
+  local message="$1"
+  run_as_user /usr/bin/osascript -e "display dialog \"$message\" buttons {\"好的\"} default button \"好的\" with title \"Codex 历史修复\"" >/dev/null 2>&1 || true
+}
+
+if [ ! -x "$node_bin" ]; then
+  echo "Bundled node not found: $node_bin"
+  notify_user "安装没有完成：内置 Node 运行时缺失。请把日志发给老师或助教：$LOG_FILE"
+  exit 0
+fi
+
+if [ ! -f "$cli_path" ]; then
+  echo "CLI not found: $cli_path"
+  notify_user "安装没有完成：修复工具文件缺失。请把日志发给老师或助教：$LOG_FILE"
+  exit 0
+fi
+
+run_as_user "$node_bin" "$cli_path" setup --codex-home "$user_home/.codex"
+run_as_user "$node_bin" "$cli_path" doctor --codex-home "$user_home/.codex" > "$LOG_DIR/embedded-doctor.txt" 2>&1 || true
+
+notify_user "Codex 历史修复已完成。请按 Command + Q 完全退出 Codex Desktop，然后重新打开 Codex。"
+
+echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] embedded postinstall finished"
+exit 0

@@ -1,5 +1,15 @@
 # Release Notes
 
+## v0.3.0
+
+This release adds embedded-runtime installers, the new recommended path for beginners.
+
+- Add `codex-history-repair-embedded-mac.pkg` with bundled Node.js for Apple Silicon and Intel Macs.
+- Add `codex-history-repair-embedded-windows.zip` with bundled Node.js for Windows x64.
+- Add embedded macOS and Windows installer scripts that run the repair without requiring Node.js or Git on student machines.
+- Add `scripts/build-embedded-assets.sh` to fetch official Node.js 24 runtimes and package self-contained assets.
+- Update beginner docs to recommend embedded assets first.
+
 ## v0.2.0
 
 This release hardens the project for real student environments across macOS and Windows.

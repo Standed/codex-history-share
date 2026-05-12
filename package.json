@@ -1,6 +1,6 @@
 {
   "name": "codex-history-share",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Keep Codex local sidebar history visible across API providers and ChatGPT login modes.",
   "type": "module",
   "bin": {
@@ -18,13 +18,14 @@
     "skills"
   ],
   "scripts": {
-    "test": "node --test",
+    "test": "node --test test/*.test.js",
     "start": "node ./src/cli.js",
     "status": "node ./src/cli.js status",
     "build:mac-zip": "bash scripts/build-mac-zip.sh",
     "build:mac-pkg": "bash scripts/build-mac-pkg.sh",
     "build:release-assets": "bash scripts/build-release-assets.sh",
-    "build:windows-zip": "bash scripts/build-windows-zip.sh"
+    "build:windows-zip": "bash scripts/build-windows-zip.sh",
+    "build:embedded-assets": "bash scripts/build-embedded-assets.sh"
   },
   "keywords": [
     "codex",

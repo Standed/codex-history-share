@@ -19,7 +19,7 @@
 从 GitHub Releases 下载：
 
 ```text
-codex-history-repair-mac.pkg
+codex-history-repair-embedded-mac.pkg
 ```
 
 发布页：
@@ -28,7 +28,7 @@ codex-history-repair-mac.pkg
 https://github.com/Standed/codex-history-share/releases/latest
 ```
 
-学员只需要双击安装包，一路继续。安装器会自动执行修复。
+学员只需要双击安装包，一路继续。安装器会自动执行修复。内置版不需要学员预先安装 Node.js 或 Git。
 
 如果提示需要安装 Node.js，安装器会自动打开 Node.js 官网。让学员安装 Node.js 24 LTS，装完后再双击一次安装包。
 
@@ -54,7 +54,7 @@ docs/小白学员安装说明.md
 从 GitHub Releases 下载：
 
 ```text
-codex-history-repair-windows.zip
+codex-history-repair-embedded-windows.zip
 ```
 
 解压后双击：
@@ -65,7 +65,7 @@ CodexHistoryRepair-Windows.cmd
 
 如果 Windows SmartScreen 提示风险，点击“更多信息”，再点“仍要运行”。
 
-如果提示需要安装 Node.js，工具会自动打开 Node.js 官网。安装 Node.js 24 LTS 后，再双击一次修复工具。
+内置版不需要学员预先安装 Node.js 或 Git。
 
 完成后，完全退出 Codex Desktop，再重新打开 Codex。
 

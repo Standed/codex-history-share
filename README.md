@@ -18,7 +18,7 @@ This project wraps the proven low-level repair logic from [`codex-provider-sync`
 For users who do not know how to open Terminal, use the macOS installer package from the GitHub release assets:
 
 ```text
-codex-history-repair-mac.pkg
+codex-history-repair-embedded-mac.pkg
 ```
 
 Release page:
@@ -29,7 +29,7 @@ https://github.com/Standed/codex-history-share/releases/latest
 
 Double-click the package and follow the installer. It runs the repair automatically.
 
-If Node.js is missing, the installer opens the Node.js website automatically. Install Node.js 24 LTS, then run the package again.
+The embedded package includes Node.js, so users do not need to install Node.js or Git.
 
 After it finishes, quit and reopen Codex Desktop.
 
@@ -41,7 +41,7 @@ The zip helper is still provided as a fallback, but macOS may block unsigned `.c
 For Windows users, download this release asset:
 
 ```text
-codex-history-repair-windows.zip
+codex-history-repair-embedded-windows.zip
 ```
 
 Unzip it and double-click:
@@ -52,7 +52,7 @@ CodexHistoryRepair-Windows.cmd
 
 If Windows SmartScreen appears, click More info, then Run anyway.
 
-If Node.js is missing, the helper opens the Node.js website. Install Node.js 24 LTS, then run the helper again.
+The embedded package includes Node.js, so users do not need to install Node.js or Git.
 
 After it finishes, fully quit and reopen Codex Desktop.
 
